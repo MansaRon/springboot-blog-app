@@ -85,4 +85,11 @@ public class PostRestController implements AbstractPostDTORestController {
                         .build()
         );
     }
+
+    @Override
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePost(long id) {
+        log.trace("public ResponseEntity<String> deletePost(long id)");
+        return ResponseEntity.ok(postService.deletePost(id));
+    }
 }

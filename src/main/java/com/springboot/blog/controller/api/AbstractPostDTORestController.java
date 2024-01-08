@@ -265,4 +265,65 @@ public interface AbstractPostDTORestController {
                     })
     })
     ResponseEntity<PostDTOApiResource> editPost(@PathVariable(name = "id") long id, @RequestBody PostDTO postDTO);
+
+    @Operation(tags = "Delete post", summary = "Delete post")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Post deleted successfully",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = PostDTOApiResource.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Request failed, incorrect payload",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authorised to access resource",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Authorisation invalid",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Requested resource does not exist",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "Request could not be completed",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    })
+    })
+    ResponseEntity<String> deletePost(@PathVariable(name = "id") long id);
 }

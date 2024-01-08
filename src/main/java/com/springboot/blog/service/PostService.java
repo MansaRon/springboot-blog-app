@@ -17,4 +17,6 @@ public interface PostService {
     PostDTO getPostById(long id);
 
     PostDTO editPost(long id, PostDTO postDTO);
+
+    String deletePost(long id);
 }
