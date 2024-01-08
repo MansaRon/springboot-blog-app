@@ -1,6 +1,9 @@
 package com.springboot.blog.service;
 
 import com.springboot.blog.dto.post.PostDTO;
+import com.springboot.blog.entity.Post;
+
+import java.util.List;
 
 /**
  * @author Thendo
@@ -8,4 +11,10 @@ import com.springboot.blog.dto.post.PostDTO;
  */
 public interface PostService {
     PostDTO createPost(PostDTO postDTO);
+
+    List<PostDTO> getAllPosts();
+
+    PostDTO getPostById(long id);
+
+    PostDTO editPost(long id, PostDTO postDTO);
 }

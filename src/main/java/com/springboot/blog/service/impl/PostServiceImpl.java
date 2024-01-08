@@ -2,10 +2,14 @@ package com.springboot.blog.service.impl;
 
 import com.springboot.blog.dto.post.PostDTO;
 import com.springboot.blog.entity.Post;
+import com.springboot.blog.exceptions.ResourceNotFoundException;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Thendo
@@ -19,21 +23,55 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO createPost(PostDTO postDTO) {
+        Post post = mapToEntity(postDTO);
+        return mapToDTO(postRepository.save(post));
+    }
 
-        Post post = new Post();
+    @Override
+    public List<PostDTO> getAllPosts() {
+        List<Post> getPosts = postRepository.findAll();
+        return getPosts.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public PostDTO getPostById(long id) {
+        Post post = postRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Post", "id", id)
+                );
+        return mapToDTO(post);
+    }
+
+    @Override
+    public PostDTO editPost(long id, PostDTO postDTO) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "Id", id));
+
+        post.setId(postDTO.getId());
         post.setTitle(postDTO.getTitle());
         post.setDescription(postDTO.getDescription());
         post.setContent(postDTO.getContent());
 
-        Post newPost = postRepository.save(post);
+        Post updatedPost = postRepository.save(post);
+        return mapToDTO(updatedPost);
+    }
 
-        PostDTO postResponse = new PostDTO();
-        postResponse.setId(newPost.getId());
-        postResponse.setTitle(newPost.getTitle());
-        postResponse.setDescription(newPost.getDescription());
-        postResponse.setContent(newPost.getContent());
+    private PostDTO mapToDTO(Post post) {
+        return PostDTO.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .description(post.getDescription())
+                .content(post.getContent())
+                .build();
+    }
 
-        return postResponse;
+    private Post mapToEntity(PostDTO postDTO) {
+        return Post.builder()
+                .id(postDTO.getId())
+                .title(postDTO.getTitle())
+                .description(postDTO.getDescription())
+                .content(postDTO.getContent())
+                .build();
     }
 
 }
