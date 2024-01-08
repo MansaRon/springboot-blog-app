@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -142,7 +143,8 @@ public interface AbstractPostDTORestController {
                                     @Schema(implementation = GlobalApiErrorResponse.class))
                     })
     })
-    ResponseEntity<PostDTOListApiResource> getPosts();
+    ResponseEntity<PostDTOListApiResource> getPosts(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize);
 
     @Operation(tags = "Get Post By ID", summary = "Retrieval of a single post")
     @ApiResponses({

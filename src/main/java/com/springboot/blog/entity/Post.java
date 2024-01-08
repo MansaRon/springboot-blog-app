@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post extends Base {
+public class Post {
 
     /**
      * Unique ID for database referencing.

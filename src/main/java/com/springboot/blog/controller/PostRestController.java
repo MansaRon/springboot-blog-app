@@ -43,12 +43,12 @@ public class PostRestController implements AbstractPostDTORestController {
 
     @Override
     @GetMapping
-    public ResponseEntity<PostDTOListApiResource> getPosts() {
+    public ResponseEntity<PostDTOListApiResource> getPosts(int pageNo, int pageSize) {
         log.trace("public ResponseEntity<PostDTOListApiResource> getPosts()");
         return ResponseEntity.ok(
                 PostDTOListApiResource.builder()
                         .timestamp(Instant.now())
-                        .data(postService.getAllPosts())
+                        .data(postService.getAllPosts(pageNo, pageSize))
                         .message("Posts retrieved")
                         .status(String.valueOf(HttpStatus.OK))
                         .statusCode(HttpStatus.OK.value())
