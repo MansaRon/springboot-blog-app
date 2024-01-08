@@ -3,6 +3,7 @@ package com.springboot.blog.controller.api;
 import com.springboot.blog.dto.GlobalApiErrorResponse;
 import com.springboot.blog.dto.api.PostDTOApiResource;
 import com.springboot.blog.dto.api.PostDTOListApiResource;
+import com.springboot.blog.dto.api.PostPageApiResource;
 import com.springboot.blog.dto.post.PostDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -92,7 +93,7 @@ public interface AbstractPostDTORestController {
                     content = {
                             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema =
-                                    @Schema(implementation = PostDTOListApiResource.class))
+                                    @Schema(implementation = PostPageApiResource.class))
                     }),
             @ApiResponse(
                     responseCode = "400",
@@ -143,7 +144,7 @@ public interface AbstractPostDTORestController {
                                     @Schema(implementation = GlobalApiErrorResponse.class))
                     })
     })
-    ResponseEntity<PostDTOListApiResource> getPosts(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+    ResponseEntity<PostPageApiResource> getPosts(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
                                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize);
 
     @Operation(tags = "Get Post By ID", summary = "Retrieval of a single post")

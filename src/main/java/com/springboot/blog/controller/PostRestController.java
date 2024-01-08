@@ -3,6 +3,7 @@ package com.springboot.blog.controller;
 import com.springboot.blog.controller.api.AbstractPostDTORestController;
 import com.springboot.blog.dto.api.PostDTOApiResource;
 import com.springboot.blog.dto.api.PostDTOListApiResource;
+import com.springboot.blog.dto.api.PostPageApiResource;
 import com.springboot.blog.dto.post.PostDTO;
 import com.springboot.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -43,10 +44,10 @@ public class PostRestController implements AbstractPostDTORestController {
 
     @Override
     @GetMapping
-    public ResponseEntity<PostDTOListApiResource> getPosts(int pageNo, int pageSize) {
+    public ResponseEntity<PostPageApiResource> getPosts(int pageNo, int pageSize) {
         log.trace("public ResponseEntity<PostDTOListApiResource> getPosts()");
         return ResponseEntity.ok(
-                PostDTOListApiResource.builder()
+                PostPageApiResource.builder()
                         .timestamp(Instant.now())
                         .data(postService.getAllPosts(pageNo, pageSize))
                         .message("Posts retrieved")
