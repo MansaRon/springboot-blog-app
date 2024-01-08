@@ -63,6 +63,12 @@ public class PostServiceImpl implements PostService {
         return "Post deleted";
     }
 
+    @Override
+    public String deleteAll() {
+        postRepository.deleteAll();
+        return "All posts deleted";
+    }
+
     private PostDTO mapToDTO(Post post) {
         return PostDTO.builder()
                 .id(post.getId())
