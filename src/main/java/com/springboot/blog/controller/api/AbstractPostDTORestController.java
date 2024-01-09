@@ -5,6 +5,7 @@ import com.springboot.blog.dto.api.PostDTOApiResource;
 import com.springboot.blog.dto.api.PostDTOListApiResource;
 import com.springboot.blog.dto.api.PostPageApiResource;
 import com.springboot.blog.dto.post.PostDTO;
+import com.springboot.blog.utils.AppConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -144,10 +145,10 @@ public interface AbstractPostDTORestController {
                                     @Schema(implementation = GlobalApiErrorResponse.class))
                     })
     })
-    ResponseEntity<PostPageApiResource> getPosts(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                                    @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                                 @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-                                                 @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir);
+    ResponseEntity<PostPageApiResource> getPosts(@RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+                                                    @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+                                                 @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortBy,
+                                                 @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir);
 
     @Operation(tags = "Get Post By ID", summary = "Retrieval of a single post")
     @ApiResponses({

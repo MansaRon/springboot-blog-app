@@ -6,20 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * @author Thendo
  * @date 2024/01/06
  */
 @Data
 @Entity
-@Table(name = "posts")
+@Table(name = "comments")
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public class Comment {
 
     /**
      * Unique ID for database referencing.
@@ -30,26 +27,27 @@ public class Post {
     private Long id;
 
     /**
-     * Name of the post
+     * The content of the comment
      */
-    @Column(name = "title", nullable = false)
-    private String title;
+    @Column(name = "body")
+    private String body;
 
     /**
-     * A description of the post
+     * The email of the user commenting
      */
-    @Column(name = "description")
-    private String description;
+    @Column(name = "email")
+    private String email;
 
     /**
-     * The content/details of the post
+     * The name of the person who is commenting
      */
-    @Column(name = "content")
-    private String content;
+    @Column(name = "name")
+    private String name;
 
     /**
-     * Comments list
+     * Post entity mapped to comment class
      */
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Comment> comments = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 }
