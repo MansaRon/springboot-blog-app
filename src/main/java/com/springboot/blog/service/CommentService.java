@@ -3,6 +3,8 @@ package com.springboot.blog.service;
 import com.springboot.blog.dto.comment.CommentDTO;
 import com.springboot.blog.dto.post.PostDTO;
 
+import java.util.List;
+
 /**
  * @author Thendo
  * @date 2024/01/09
@@ -10,4 +12,6 @@ import com.springboot.blog.dto.post.PostDTO;
 public interface CommentService {
 
     CommentDTO createComment(long id, CommentDTO commentDTO);
+
+    List<CommentDTO> getCommentsByPostId(long id);
 }

@@ -2,6 +2,7 @@ package com.springboot.blog.controller.api;
 
 import com.springboot.blog.dto.GlobalApiErrorResponse;
 import com.springboot.blog.dto.api.CommentDTOApiResource;
+import com.springboot.blog.dto.api.CommentDTOListApiResource;
 import com.springboot.blog.dto.api.PostDTOApiResource;
 import com.springboot.blog.dto.comment.CommentDTO;
 import com.springboot.blog.dto.post.PostDTO;
@@ -81,4 +82,57 @@ public interface AbstractCommentDTORestController {
                     })
     })
     ResponseEntity<CommentDTOApiResource> createComment(@PathVariable long id, @RequestBody CommentDTO commentDTO);
+
+    @Operation(tags = "Get comments from a post", summary = "Get comments")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Comments retrieved successfully",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = CommentDTOListApiResource.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authorised to access resource",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Authorisation invalid",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Requested resource does not exist",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "Request could not be completed",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    })
+    })
+    ResponseEntity<CommentDTOListApiResource> getCommentsByPostId(@PathVariable long postId);
 }

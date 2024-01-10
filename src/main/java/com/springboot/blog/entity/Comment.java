@@ -47,7 +47,7 @@ public class Comment {
     /**
      * Post entity mapped to comment class
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 }

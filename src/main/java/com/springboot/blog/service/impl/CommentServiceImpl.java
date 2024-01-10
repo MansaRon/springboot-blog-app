@@ -11,6 +11,9 @@ import com.springboot.blog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author Thendo
  * @date 2024/01/09
@@ -36,6 +39,13 @@ public class CommentServiceImpl implements CommentService {
         Comment saveComment = commentRepository.save(comment);
 
         return mapToDTO(saveComment);
+    }
+
+    @Override
+    public List<CommentDTO> getCommentsByPostId(long id) {
+        List<Comment> comments = commentRepository.findByPostId(id);
+        // converts comments inside the list into comment dtos
+        return comments.stream().map(comment -> mapToDTO(comment)).collect(Collectors.toList());
     }
 
     private CommentDTO mapToDTO(Comment comment) {
