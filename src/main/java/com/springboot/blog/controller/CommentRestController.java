@@ -70,4 +70,19 @@ public class CommentRestController implements AbstractCommentDTORestController {
         );
     }
 
+    @Override
+    @PutMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity<CommentDTOApiResource> updateComment(@PathVariable(value = "postId") Long postId, @PathVariable(value = "commentId") Long commentId, @RequestBody CommentDTO commentDTO) {
+        log.trace("public ResponseEntity<CommentDTOApiResource> updateComment(@PathVariable(value = \"postId\") Long postId, @PathVariable(value = \"commentId\") Long commentId, @RequestBody CommentDTO commentDTO)");
+        return ResponseEntity.ok(
+                CommentDTOApiResource.builder()
+                        .timestamp(Instant.now())
+                        .data(commentService.editComment(postId, commentId, commentDTO))
+                        .message("Comment updated")
+                        .status(String.valueOf(HttpStatus.OK))
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
 }
