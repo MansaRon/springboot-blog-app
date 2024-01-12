@@ -55,4 +55,19 @@ public class CommentRestController implements AbstractCommentDTORestController {
         );
     }
 
+    @Override
+    @GetMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity<CommentDTOApiResource> getCommentById(@PathVariable(value = "postId") Long postId, @PathVariable(value = "commentId") Long commentId) {
+        log.trace("public ResponseEntity<CommentDTOApiResource> getCommentById(@PathVariable(value = \"postId\") Long postId, @PathVariable(value = \"commentId\") Long commentId)");
+        return ResponseEntity.ok(
+                CommentDTOApiResource.builder()
+                        .timestamp(Instant.now())
+                        .data(commentService.getCommentById(postId, commentId))
+                        .message("Comments by ID retrieved")
+                        .status(String.valueOf(HttpStatus.OK))
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
 }

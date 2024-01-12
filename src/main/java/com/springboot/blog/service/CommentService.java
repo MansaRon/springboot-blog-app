@@ -14,4 +14,8 @@ public interface CommentService {
     CommentDTO createComment(long id, CommentDTO commentDTO);
 
     List<CommentDTO> getCommentsByPostId(long id);
+
+    CommentDTO getCommentById(Long postId, Long commentId);
+
+    CommentDTO editComment(Long postId, Long commentId, CommentDTO commentDTO);
 }
