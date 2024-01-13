@@ -85,4 +85,11 @@ public class CommentRestController implements AbstractCommentDTORestController {
         );
     }
 
+    @Override
+    @DeleteMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity<String> deleteComment(@PathVariable(value = "postId") Long postId, @PathVariable(value = "commentId") Long commentId) {
+        log.trace("public ResponseEntity<String> deleteComment(Long postId, Long commentId)");
+        return ResponseEntity.ok(commentService.deleteComment(postId, commentId));
+    }
+
 }

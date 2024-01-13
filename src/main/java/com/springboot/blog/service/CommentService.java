@@ -18,4 +18,6 @@ public interface CommentService {
     CommentDTO getCommentById(Long postId, Long commentId);
 
     CommentDTO editComment(Long postId, Long commentId, CommentDTO commentDTO);
+
+    String deleteComment(Long postId, Long commentID);
 }
