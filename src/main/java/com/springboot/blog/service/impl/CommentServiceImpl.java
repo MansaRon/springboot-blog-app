@@ -6,6 +6,7 @@ import com.springboot.blog.entity.Comment;
 import com.springboot.blog.entity.Post;
 import com.springboot.blog.exceptions.BlogAPIException;
 import com.springboot.blog.exceptions.ResourceNotFoundException;
+import com.springboot.blog.mapper.ObjectMapper;
 import com.springboot.blog.repository.CommentRepository;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.CommentService;
@@ -28,6 +29,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public CommentDTO createComment(long id, CommentDTO commentDTO) {
@@ -107,22 +111,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private CommentDTO mapToDTO(Comment comment) {
-        return CommentDTO.builder()
-                .id(comment.getId())
-                .name(comment.getName())
-                .email(comment.getEmail())
-                .body(comment.getBody())
-                .post(comment.getPost())
-                .build();
+        return objectMapper.objectMapper().map(comment, CommentDTO.class);
     }
 
     private Comment mapToEntity(CommentDTO commentDTO) {
-        return Comment.builder()
-                .id(commentDTO.getId())
-                .name(commentDTO.getName())
-                .email(commentDTO.getEmail())
-                .body(commentDTO.getBody())
-                .post(commentDTO.getPost())
-                .build();
+        return objectMapper.objectMapper().map(commentDTO, Comment.class);
     }
 }

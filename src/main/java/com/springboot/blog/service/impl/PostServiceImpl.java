@@ -3,6 +3,7 @@ package com.springboot.blog.service.impl;
 import com.springboot.blog.dto.post.PostDTO;
 import com.springboot.blog.entity.Post;
 import com.springboot.blog.exceptions.ResourceNotFoundException;
+import com.springboot.blog.mapper.ObjectMapper;
 import com.springboot.blog.payload.PostResponse;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
@@ -25,6 +26,8 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public PostDTO createPost(PostDTO postDTO) {
@@ -91,21 +94,11 @@ public class PostServiceImpl implements PostService {
     }
 
     private PostDTO mapToDTO(Post post) {
-        return PostDTO.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .description(post.getDescription())
-                .content(post.getContent())
-                .build();
+        return objectMapper.objectMapper().map(post, PostDTO.class);
     }
 
     private Post mapToEntity(PostDTO postDTO) {
-        return Post.builder()
-                .id(postDTO.getId())
-                .title(postDTO.getTitle())
-                .description(postDTO.getDescription())
-                .content(postDTO.getContent())
-                .build();
+        return objectMapper.objectMapper().map(postDTO, Post.class);
     }
 
 }
