@@ -19,5 +19,5 @@ public class CommentDTO {
     private String body;
     private String email;
     private String name;
-    private Post post;
+    // private Post post;
 }

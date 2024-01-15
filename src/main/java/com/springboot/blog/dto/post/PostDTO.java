@@ -1,7 +1,10 @@
 package com.springboot.blog.dto.post;
 
+import com.springboot.blog.dto.comment.CommentDTO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Set;
 
 /**
  * @author Thendo
@@ -16,4 +19,5 @@ public class PostDTO {
     private String title;
     private String description;
     private String content;
+    private Set<CommentDTO> comments;
 }

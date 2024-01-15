@@ -1,9 +1,7 @@
 package com.springboot.blog.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
@@ -13,7 +11,8 @@ import java.util.Set;
  * @author Thendo
  * @date 2024/01/06
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "posts")
 @SuperBuilder

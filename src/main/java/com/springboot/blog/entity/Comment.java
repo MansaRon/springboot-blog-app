@@ -1,16 +1,16 @@
 package com.springboot.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
  * @author Thendo
  * @date 2024/01/06
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "comments")
 @SuperBuilder
@@ -47,6 +47,7 @@ public class Comment {
     /**
      * Post entity mapped to comment class
      */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
