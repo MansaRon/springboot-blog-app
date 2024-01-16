@@ -23,6 +23,5 @@ public class GlobalApiErrorResponse {
     private Integer statusCode;
     private String message;
     private Instant timestamp;
-    private String errorCode;
     private String path;
 }
