@@ -5,6 +5,7 @@ import com.springboot.blog.dto.api.CommentDTOApiResource;
 import com.springboot.blog.dto.api.CommentDTOListApiResource;
 import com.springboot.blog.dto.comment.CommentDTO;
 import com.springboot.blog.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,8 @@ public class CommentRestController implements AbstractCommentDTORestController {
 
     @Override
     @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<CommentDTOApiResource> createComment(@PathVariable(value = "postId") long id, @RequestBody CommentDTO commentDTO) {
-        log.trace("public ResponseEntity<CommentDTOApiResource> createComment(@PathVariable(value = \"postId\") long id, @RequestBody CommentDTO commentDTO)");
+    public ResponseEntity<CommentDTOApiResource> createComment(@PathVariable(value = "postId") long id, @RequestBody @Valid CommentDTO commentDTO) {
+        log.trace("public ResponseEntity<CommentDTOApiResource> createComment(@PathVariable(value = \"postId\") long id, @RequestBody @Valid CommentDTO commentDTO)");
         return ResponseEntity.ok(
                 CommentDTOApiResource.builder()
                         .timestamp(Instant.now())
@@ -72,8 +73,8 @@ public class CommentRestController implements AbstractCommentDTORestController {
 
     @Override
     @PutMapping("/posts/{postId}/comments/{commentId}")
-    public ResponseEntity<CommentDTOApiResource> updateComment(@PathVariable(value = "postId") Long postId, @PathVariable(value = "commentId") Long commentId, @RequestBody CommentDTO commentDTO) {
-        log.trace("public ResponseEntity<CommentDTOApiResource> updateComment(@PathVariable(value = \"postId\") Long postId, @PathVariable(value = \"commentId\") Long commentId, @RequestBody CommentDTO commentDTO)");
+    public ResponseEntity<CommentDTOApiResource> updateComment(@PathVariable(value = "postId") Long postId, @PathVariable(value = "commentId") Long commentId, @RequestBody @Valid CommentDTO commentDTO) {
+        log.trace("public ResponseEntity<CommentDTOApiResource> updateComment(@PathVariable(value = \"postId\") Long postId, @PathVariable(value = \"commentId\") Long commentId, @RequestBody @Valid CommentDTO commentDTO)");
         return ResponseEntity.ok(
                 CommentDTOApiResource.builder()
                         .timestamp(Instant.now())

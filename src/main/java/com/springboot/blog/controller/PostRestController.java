@@ -6,6 +6,7 @@ import com.springboot.blog.dto.api.PostDTOListApiResource;
 import com.springboot.blog.dto.api.PostPageApiResource;
 import com.springboot.blog.dto.post.PostDTO;
 import com.springboot.blog.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,8 +30,8 @@ public class PostRestController implements AbstractPostDTORestController {
 
     @Override
     @PostMapping
-    public ResponseEntity<PostDTOApiResource> createPost(@RequestBody PostDTO postDTO) {
-        log.trace("public ResponseEntity<PostDTOApiResource> createPost(PostDTO postDTO)");
+    public ResponseEntity<PostDTOApiResource> createPost(@RequestBody @Valid PostDTO postDTO) {
+        log.trace("public ResponseEntity<PostDTOApiResource> createPost(@RequestBody @Valid PostDTO postDTO)");
         return ResponseEntity.ok(
                 PostDTOApiResource.builder()
                         .timestamp(Instant.now())
@@ -74,8 +75,8 @@ public class PostRestController implements AbstractPostDTORestController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<PostDTOApiResource> editPost(@PathVariable long id, @RequestBody PostDTO postDTO) {
-        log.trace("public ResponseEntity<PostDTOApiResource> editPost(@PathVariable long id, @RequestBody PostDTO postDTO)");
+    public ResponseEntity<PostDTOApiResource> editPost(@PathVariable long id, @Valid @RequestBody PostDTO postDTO) {
+        log.trace("public ResponseEntity<PostDTOApiResource> editPost(@PathVariable long id, @Valid @RequestBody PostDTO postDTO)");
         return ResponseEntity.ok(
                 PostDTOApiResource.builder()
                         .timestamp(Instant.now())

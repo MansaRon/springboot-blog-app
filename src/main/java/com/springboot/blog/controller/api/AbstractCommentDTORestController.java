@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,7 +80,7 @@ public interface AbstractCommentDTORestController {
                                     @Schema(implementation = GlobalApiErrorResponse.class))
                     })
     })
-    ResponseEntity<CommentDTOApiResource> createComment(@PathVariable long id, @RequestBody CommentDTO commentDTO);
+    ResponseEntity<CommentDTOApiResource> createComment(@PathVariable long id, @RequestBody @Valid CommentDTO commentDTO);
 
     @Operation(tags = "Get comments from a post", summary = "Get comments")
     @ApiResponses({
@@ -254,7 +255,7 @@ public interface AbstractCommentDTORestController {
                                     @Schema(implementation = GlobalApiErrorResponse.class))
                     })
     })
-    ResponseEntity<CommentDTOApiResource> updateComment(@PathVariable Long postId, @PathVariable Long commentId, CommentDTO commentDTO);
+    ResponseEntity<CommentDTOApiResource> updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody @Valid CommentDTO commentDTO);
 
     @Operation(tags = "Delete comment", summary = "Delete a comment by ID")
     @ApiResponses({

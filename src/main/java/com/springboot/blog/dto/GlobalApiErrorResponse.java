@@ -1,5 +1,6 @@
 package com.springboot.blog.dto;
 
+import com.springboot.blog.dto.error.ErrorDetailDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,4 +25,5 @@ public class GlobalApiErrorResponse {
     private String message;
     private Instant timestamp;
     private String path;
+    private ErrorDetailDTO details;
 }
