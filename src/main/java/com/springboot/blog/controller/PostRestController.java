@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -30,6 +31,7 @@ public class PostRestController implements AbstractPostDTORestController {
 
     @Override
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PostDTOApiResource> createPost(@RequestBody @Valid PostDTO postDTO) {
         log.trace("public ResponseEntity<PostDTOApiResource> createPost(@RequestBody @Valid PostDTO postDTO)");
         return ResponseEntity.ok(
@@ -75,6 +77,7 @@ public class PostRestController implements AbstractPostDTORestController {
 
     @Override
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PostDTOApiResource> editPost(@PathVariable long id, @Valid @RequestBody PostDTO postDTO) {
         log.trace("public ResponseEntity<PostDTOApiResource> editPost(@PathVariable long id, @Valid @RequestBody PostDTO postDTO)");
         return ResponseEntity.ok(
@@ -90,6 +93,7 @@ public class PostRestController implements AbstractPostDTORestController {
 
     @Override
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deletePost(long id) {
         log.trace("public ResponseEntity<String> deletePost(long id)");
         return ResponseEntity.ok(postService.deletePost(id));
@@ -97,6 +101,7 @@ public class PostRestController implements AbstractPostDTORestController {
 
     @Override
     @DeleteMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteAllPosts() {
         log.trace("public ResponseEntity<String> deleteAllPosts()");
         return ResponseEntity.ok(postService.deleteAll());
