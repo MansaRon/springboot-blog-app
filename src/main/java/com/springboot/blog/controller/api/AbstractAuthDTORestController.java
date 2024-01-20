@@ -2,7 +2,9 @@ package com.springboot.blog.controller.api;
 
 import com.springboot.blog.dto.GlobalApiErrorResponse;
 import com.springboot.blog.dto.api.LoginDTOApiResource;
-import com.springboot.blog.dto.login.LoginDTO;
+import com.springboot.blog.dto.api.RegistrationDTOApiResource;
+import com.springboot.blog.dto.auth.LoginDTO;
+import com.springboot.blog.dto.auth.RegistrationDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author Thendo
  * @date 2024/01/20
  */
-public interface AbstractLoginDTORestController {
+public interface AbstractAuthDTORestController {
 
     @Operation(tags = "User Login", summary = "Login User")
     @ApiResponses({
@@ -79,5 +81,66 @@ public interface AbstractLoginDTORestController {
                     })
     })
     ResponseEntity<LoginDTOApiResource> login(@RequestBody @Valid LoginDTO loginDTO);
+
+    @Operation(tags = "User Registration", summary = "Login Registration")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "User successfully registered",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = RegistrationDTO.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Request failed, incorrect payload",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authorised to access resource",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Authorisation invalid",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Requested resource does not exist",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "Request could not be completed",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    })
+    })
+    ResponseEntity<RegistrationDTOApiResource> register(@RequestBody @Valid RegistrationDTO registrationDTO);
 
 }

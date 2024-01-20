@@ -1,6 +1,7 @@
 package com.springboot.blog.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,6 +52,13 @@ public class User {
      */
     @Column(nullable = false)
     private String password;
+
+    /**
+     * Status for the user account.
+     */
+    @NotNull
+    @Column(nullable = false)
+    private AccountStatus status;
 
     /**
      * Roles set for the user.

@@ -1,5 +1,6 @@
 package com.springboot.blog.exceptions;
 
+import com.mysql.cj.xdevapi.Client;
 import com.springboot.blog.dto.GlobalApiErrorResponse;
 import com.springboot.blog.dto.error.ErrorDetailDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +30,22 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler({ClientException.class})
+    public ResponseEntity<GlobalApiErrorResponse> handleClientException(
+            ClientException exception, HttpServletRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(GlobalApiErrorResponse.builder()
+                        .path(exception.getMessage())
+                        .status(HttpStatus.BAD_REQUEST.toString())
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
+                        .path(getPath(request))
+                        .message(exception.getMessage())
+                        .timestamp(Instant.now())
+                        .build()
+                );
+    }
+
     //handle specific exceptions and global exceptions
     @ExceptionHandler({ResourceNotFoundException.class})
     public ResponseEntity<GlobalApiErrorResponse> handleResourceNotFoundException(
@@ -48,11 +65,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({BlogAPIException.class})
     public ResponseEntity<GlobalApiErrorResponse> handleBlogAPIException(
-            ResourceNotFoundException exception, HttpServletRequest request) {
+            BlogAPIException exception, HttpServletRequest request) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(GlobalApiErrorResponse.builder()
-                        .path(exception.getResourceName())
+                        .path(exception.getStatus().toString())
                         .status(HttpStatus.BAD_REQUEST.toString())
                         .statusCode(HttpStatus.BAD_REQUEST.value())
                         .path(getPath(request))

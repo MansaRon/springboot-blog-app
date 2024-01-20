@@ -1,9 +1,11 @@
 package com.springboot.blog.controller;
 
-import com.springboot.blog.controller.api.AbstractLoginDTORestController;
+import com.springboot.blog.controller.api.AbstractAuthDTORestController;
 import com.springboot.blog.dto.api.LoginDTOApiResource;
-import com.springboot.blog.dto.login.LoginDTO;
-import com.springboot.blog.service.LoginService;
+import com.springboot.blog.dto.api.RegistrationDTOApiResource;
+import com.springboot.blog.dto.auth.LoginDTO;
+import com.springboot.blog.dto.auth.RegistrationDTO;
+import com.springboot.blog.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +26,9 @@ import java.time.Instant;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/auth")
-public class LoginController implements AbstractLoginDTORestController {
+public class AuthController implements AbstractAuthDTORestController {
 
-    private final LoginService loginService;
+    private final AuthService loginService;
 
     @Override
     @PostMapping("/login")
@@ -37,6 +39,21 @@ public class LoginController implements AbstractLoginDTORestController {
                         .timestamp(Instant.now())
                         .data(loginService.login(loginDTO))
                         .message("User logged in")
+                        .status(String.valueOf(HttpStatus.OK))
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @Override
+    @PostMapping("/register")
+    public ResponseEntity<RegistrationDTOApiResource> register(@RequestBody @Valid RegistrationDTO registrationDTO) {
+        log.trace("public ResponseEntity<RegistrationDTOApiResource> register(@RequestBody @Valid RegistrationDTO registrationDTO)");
+        return ResponseEntity.ok(
+                RegistrationDTOApiResource.builder()
+                        .timestamp(Instant.now())
+                        .data(loginService.register(registrationDTO))
+                        .message("User registered")
                         .status(String.valueOf(HttpStatus.OK))
                         .statusCode(HttpStatus.OK.value())
                         .build()
