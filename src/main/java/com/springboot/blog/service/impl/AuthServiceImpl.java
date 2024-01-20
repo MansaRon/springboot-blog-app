@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Thendo
@@ -87,6 +88,9 @@ public class AuthServiceImpl implements AuthService {
 
         userRepository.save(user);
 
-        return objectMapper.objectMapper().map(user, RegistrationDTO.class);
+        RegistrationDTO resultDTO = objectMapper.objectMapper().map(user, RegistrationDTO.class);
+        resultDTO.setRole(user.getRoles());
+
+        return resultDTO;
     }
 }
