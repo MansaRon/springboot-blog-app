@@ -75,6 +75,10 @@ public class User {
     )
     private Set<Role> roles;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private OneTimePassword oneTimePassword;
+    /**
+     * OTP associated with user
+     */
+//    @JoinColumn(name = "OTP_id")
+//    @OneToOne(cascade = CascadeType.ALL)
+//    private OneTimePassword oneTimePassword;
 }

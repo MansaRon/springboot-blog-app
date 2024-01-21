@@ -1,15 +1,19 @@
 package com.springboot.blog.service.impl;
 
 import com.springboot.blog.dto.auth.LoginDTO;
+import com.springboot.blog.dto.auth.OtpDTO;
 import com.springboot.blog.dto.auth.RegistrationDTO;
 import com.springboot.blog.entity.AccountStatus;
+import com.springboot.blog.entity.OneTimePassword;
 import com.springboot.blog.entity.Role;
 import com.springboot.blog.entity.User;
 import com.springboot.blog.exceptions.ClientException;
 import com.springboot.blog.mapper.ObjectMapper;
+import com.springboot.blog.repository.OneTimePasswordRepository;
 import com.springboot.blog.repository.RoleRepository;
 import com.springboot.blog.repository.UserRepository;
 import com.springboot.blog.service.AuthService;
+import com.springboot.blog.utils.OneTimePasswordHelp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,17 +38,22 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final Long expiryInterval = 5L * 60 * 1000;
+    private final OneTimePasswordRepository oneTimePasswordRepository;
+
     @Autowired
     private ObjectMapper objectMapper;
 
     public AuthServiceImpl(AuthenticationManager authenticationManager,
                            UserRepository userRepository,
                            RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           OneTimePasswordRepository OTPRepository) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.oneTimePasswordRepository = OTPRepository;
     }
 
     @Override
@@ -82,6 +92,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(registrationDTO.getPassword()))
                 .roles(roles)
                 .status(AccountStatus.AWAITING_CONFIRMATION)
+//                .oneTimePassword(returnOneTimePassword())
                 .build();
 
         userRepository.save(user);
@@ -90,5 +101,16 @@ public class AuthServiceImpl implements AuthService {
         resultDTO.setRole(user.getRoles());
 
         return resultDTO;
+    }
+
+    private OneTimePassword returnOneTimePassword() {
+        OneTimePassword oneTimePassword = new OneTimePassword();
+
+        oneTimePassword.setOneTimePasswordCode(OneTimePasswordHelp.createRandomOneTimePassword().get());
+        oneTimePassword.setExpires(new Date(System.currentTimeMillis() + expiryInterval));
+
+        oneTimePasswordRepository.save(oneTimePassword);
+
+        return oneTimePassword;
     }
 }

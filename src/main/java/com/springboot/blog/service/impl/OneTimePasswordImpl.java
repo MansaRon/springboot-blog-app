@@ -18,7 +18,7 @@ import java.util.Date;
  * @author Thendo
  * @date 2024/01/21
  */
-@Service
+
 public class OneTimePasswordImpl implements OneTimePasswordService {
 
     private final Long expiryInterval = 5L * 60 * 1000;
@@ -27,7 +27,6 @@ public class OneTimePasswordImpl implements OneTimePasswordService {
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
 
-    @Autowired
     public OneTimePasswordImpl(OneTimePasswordRepository oneTimePasswordRepository,
                                OneTimePasswordHelp oneTimePasswordHelp,
                                ObjectMapper mapper,

@@ -1,5 +1,7 @@
 package com.springboot.blog.utils;
 
+import org.springframework.context.annotation.Bean;
+
 import java.util.Random;
 import java.util.function.Supplier;
 
@@ -11,6 +13,7 @@ public class OneTimePasswordHelp {
 
     private final static Integer LENGTH = 6;
 
+    @Bean
     public static Supplier<Integer> createRandomOneTimePassword() {
         return () -> {
             Random random = new Random();
