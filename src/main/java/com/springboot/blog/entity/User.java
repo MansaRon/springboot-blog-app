@@ -74,4 +74,7 @@ public class User {
                     referencedColumnName = "id")
     )
     private Set<Role> roles;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private OneTimePassword oneTimePassword;
 }

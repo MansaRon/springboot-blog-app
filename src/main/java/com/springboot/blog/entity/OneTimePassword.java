@@ -41,4 +41,11 @@ public class OneTimePassword {
     @NonNull
     @Column(name = "expiryDate", nullable = false)
     private Date expires;
+
+    /**
+     * 1-to-1 relationship with OneTimePassword
+     */
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
