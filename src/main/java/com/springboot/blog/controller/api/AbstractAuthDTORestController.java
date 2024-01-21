@@ -2,8 +2,10 @@ package com.springboot.blog.controller.api;
 
 import com.springboot.blog.dto.GlobalApiErrorResponse;
 import com.springboot.blog.dto.api.LoginDTOApiResource;
+import com.springboot.blog.dto.api.OtpDTOApiResource;
 import com.springboot.blog.dto.api.RegistrationDTOApiResource;
 import com.springboot.blog.dto.auth.LoginDTO;
+import com.springboot.blog.dto.auth.OtpDTO;
 import com.springboot.blog.dto.auth.RegistrationDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -143,4 +145,64 @@ public interface AbstractAuthDTORestController {
     })
     ResponseEntity<RegistrationDTOApiResource> register(@RequestBody @Valid RegistrationDTO registrationDTO);
 
+    @Operation(tags = "User Confirmation", summary = "Confirming user with OTP")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "OTP verified",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = OtpDTO.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Request failed, incorrect payload",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authorised to access resource",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Authorisation invalid",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Requested resource does not exist",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "Request could not be completed",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    })
+    })
+    ResponseEntity<OtpDTOApiResource> confirmOTP(@RequestBody @Valid OtpDTO otpDTO);
 }

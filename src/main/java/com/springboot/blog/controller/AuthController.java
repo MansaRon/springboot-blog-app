@@ -2,8 +2,10 @@ package com.springboot.blog.controller;
 
 import com.springboot.blog.controller.api.AbstractAuthDTORestController;
 import com.springboot.blog.dto.api.LoginDTOApiResource;
+import com.springboot.blog.dto.api.OtpDTOApiResource;
 import com.springboot.blog.dto.api.RegistrationDTOApiResource;
 import com.springboot.blog.dto.auth.LoginDTO;
+import com.springboot.blog.dto.auth.OtpDTO;
 import com.springboot.blog.dto.auth.RegistrationDTO;
 import com.springboot.blog.service.AuthService;
 import jakarta.validation.Valid;
@@ -58,5 +60,10 @@ public class AuthController implements AbstractAuthDTORestController {
                         .statusCode(HttpStatus.OK.value())
                         .build()
         );
+    }
+
+    @Override
+    public ResponseEntity<OtpDTOApiResource> confirmOTP(@RequestBody @Valid OtpDTO otpDTO) {
+        return null;
     }
 }
