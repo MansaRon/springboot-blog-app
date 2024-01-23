@@ -59,7 +59,7 @@ public class JwtTokenProvider {
     }
 
     // Check is token is valid
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(getSignInKey())
