@@ -78,7 +78,7 @@ public class User {
     /**
      * OTP associated with user
      */
-//    @JoinColumn(name = "OTP_id")
-//    @OneToOne(cascade = CascadeType.ALL)
-//    private OneTimePassword oneTimePassword;
+    @JoinColumn(name = "OTP_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private OneTimePassword oneTimePassword;
 }

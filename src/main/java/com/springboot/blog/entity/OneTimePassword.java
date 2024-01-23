@@ -46,7 +46,6 @@ public class OneTimePassword {
      * 1-to-1 relationship with OneTimePassword
      */
 //    @JsonIgnore
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user;
+    @OneToOne(mappedBy = "oneTimePassword")
+    private User user;
 }
