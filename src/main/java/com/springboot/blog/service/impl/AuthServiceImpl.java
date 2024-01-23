@@ -3,6 +3,7 @@ package com.springboot.blog.service.impl;
 import com.springboot.blog.dto.auth.LoginDTO;
 import com.springboot.blog.dto.auth.OtpDTO;
 import com.springboot.blog.dto.auth.RegistrationDTO;
+import com.springboot.blog.dto.auth.UpdatePasswordDTO;
 import com.springboot.blog.entity.AccountStatus;
 import com.springboot.blog.entity.OneTimePassword;
 import com.springboot.blog.entity.Role;
@@ -92,7 +93,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(registrationDTO.getPassword()))
                 .roles(roles)
                 .status(AccountStatus.AWAITING_CONFIRMATION)
-//                .oneTimePassword(returnOneTimePassword())
+                .oneTimePassword(returnOneTimePassword())
                 .build();
 
         userRepository.save(user);
@@ -101,6 +102,21 @@ public class AuthServiceImpl implements AuthService {
         resultDTO.setRole(user.getRoles());
 
         return resultDTO;
+    }
+
+    @Override
+    public UpdatePasswordDTO updatePassword(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ClientException(HttpStatus.BAD_REQUEST, "Username does not exist"));
+
+        if (user != null) {
+            user.builder()
+                    .email(email)
+                    .password(passwordEncoder.encode(password))
+                    .build();
+        }
+
+        return objectMapper.objectMapper().map(user, UpdatePasswordDTO.class);
     }
 
     private OneTimePassword returnOneTimePassword() {
