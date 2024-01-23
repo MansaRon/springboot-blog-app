@@ -13,6 +13,7 @@ import com.springboot.blog.mapper.ObjectMapper;
 import com.springboot.blog.repository.OneTimePasswordRepository;
 import com.springboot.blog.repository.RoleRepository;
 import com.springboot.blog.repository.UserRepository;
+import com.springboot.blog.security.JwtTokenProvider;
 import com.springboot.blog.service.AuthService;
 import com.springboot.blog.utils.OneTimePasswordHelp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
     private final Long expiryInterval = 5L * 60 * 1000;
     private final OneTimePasswordRepository oneTimePasswordRepository;
 
@@ -49,22 +51,28 @@ public class AuthServiceImpl implements AuthService {
                            UserRepository userRepository,
                            RoleRepository roleRepository,
                            PasswordEncoder passwordEncoder,
-                           OneTimePasswordRepository OTPRepository) {
+                           OneTimePasswordRepository OTPRepository,
+                           JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.oneTimePasswordRepository = OTPRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    // TODO Change the logic to use UserDTO instead of LoginDTO and
+    // TODO set data accordingly
     @Override
     public LoginDTO login(LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDTO.getUsernameOrEmail(), loginDTO.getPassword()
                 ));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtTokenProvider.generateToken(authentication);
+        loginDTO.setAccessToken(token);
+
         return loginDTO;
     }
 

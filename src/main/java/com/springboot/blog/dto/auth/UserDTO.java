@@ -7,16 +7,17 @@ import java.util.Set;
 
 /**
  * @author Thendo
- * @date 2024/01/20
+ * @date 2024/01/23
  */
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginDTO {
-    private String usernameOrEmail;
-    private String password;
+public class UserDTO {
+    private String name;
+    private String username;
+    private String email;
     private String accessToken;
     private String tokenType = "Bearer";
     private String status;
