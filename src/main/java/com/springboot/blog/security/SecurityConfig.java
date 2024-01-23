@@ -8,6 +8,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author Thendo
@@ -25,9 +27,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private UserDetailsService userDetailsService;
+    private JwtAuthEntryPoint jwtAuthEntryPoint;
 
-    public SecurityConfig(UserDetailsService service) {
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfig(UserDetailsService service, JwtAuthEntryPoint point, JwtAuthenticationFilter filter) {
         this.userDetailsService = service;
+        this.jwtAuthEntryPoint = point;
+        this.jwtAuthenticationFilter = filter;
     }
 
     @Bean
@@ -52,7 +59,12 @@ public class SecurityConfig {
                     .permitAll()
                     .anyRequest()
                     .authenticated();
-        }).httpBasic(Customizer.withDefaults());
+        }).exceptionHandling(exception ->
+                        exception.authenticationEntryPoint(jwtAuthEntryPoint))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
