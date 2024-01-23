@@ -69,6 +69,7 @@ public class AuthController implements AbstractAuthDTORestController {
     }
 
     @Override
+    @PostMapping("/reset-password")
     public ResponseEntity<UpdatePasswordDTOApiResource> updatePassword(@RequestBody @Valid String email, @RequestBody @Valid String password) {
         log.trace("public ResponseEntity<UpdatePasswordDTOApiResource> updatePassword(@RequestBody @Valid String email, @RequestBody @Valid String password)");
         return ResponseEntity.ok(
