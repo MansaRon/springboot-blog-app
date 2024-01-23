@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.Date;
  * @author Thendo
  * @date 2024/01/23
  */
+@Component
 public class JwtTokenProvider {
 
     @Value("${app.jwt-secret}")
