@@ -1,9 +1,6 @@
 package com.springboot.blog.service.impl;
 
-import com.springboot.blog.dto.auth.LoginDTO;
-import com.springboot.blog.dto.auth.OtpDTO;
-import com.springboot.blog.dto.auth.RegistrationDTO;
-import com.springboot.blog.dto.auth.UpdatePasswordDTO;
+import com.springboot.blog.dto.auth.*;
 import com.springboot.blog.entity.AccountStatus;
 import com.springboot.blog.entity.OneTimePassword;
 import com.springboot.blog.entity.Role;
@@ -41,7 +38,6 @@ public class AuthServiceImpl implements AuthService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final Long expiryInterval = 5L * 60 * 1000;
     private final OneTimePasswordRepository oneTimePasswordRepository;
 
     @Autowired
@@ -64,16 +60,23 @@ public class AuthServiceImpl implements AuthService {
     // TODO Change the logic to use UserDTO instead of LoginDTO and
     // TODO set data accordingly
     @Override
-    public LoginDTO login(LoginDTO loginDTO) {
+    public UserDTO login(LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDTO.getUsernameOrEmail(), loginDTO.getPassword()
                 ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenProvider.generateToken(authentication);
-        loginDTO.setAccessToken(token);
+        User user = new User();
 
-        return loginDTO;
+        return UserDTO.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .username(jwtTokenProvider.getUsername(token))
+                .accessToken(jwtTokenProvider.generateToken(authentication))
+                .status(AccountStatus.ACTIVE.description())
+                .role(user.getRoles())
+                .build();
     }
 
     @Override
@@ -131,6 +134,7 @@ public class AuthServiceImpl implements AuthService {
         OneTimePassword oneTimePassword = new OneTimePassword();
 
         oneTimePassword.setOneTimePasswordCode(OneTimePasswordHelp.createRandomOneTimePassword().get());
+        Long expiryInterval = 5L * 60 * 1000;
         oneTimePassword.setExpires(new Date(System.currentTimeMillis() + expiryInterval));
 
         oneTimePasswordRepository.save(oneTimePassword);

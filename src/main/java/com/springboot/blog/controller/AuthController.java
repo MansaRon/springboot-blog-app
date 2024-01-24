@@ -1,10 +1,10 @@
 package com.springboot.blog.controller;
 
 import com.springboot.blog.controller.api.AbstractAuthDTORestController;
-import com.springboot.blog.dto.api.LoginDTOApiResource;
 import com.springboot.blog.dto.api.OtpDTOApiResource;
 import com.springboot.blog.dto.api.RegistrationDTOApiResource;
 import com.springboot.blog.dto.api.UpdatePasswordDTOApiResource;
+import com.springboot.blog.dto.api.UserDTOApiResource;
 import com.springboot.blog.dto.auth.LoginDTO;
 import com.springboot.blog.dto.auth.OtpDTO;
 import com.springboot.blog.dto.auth.RegistrationDTO;
@@ -35,10 +35,10 @@ public class AuthController implements AbstractAuthDTORestController {
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<LoginDTOApiResource> login(@RequestBody @Valid LoginDTO loginDTO) {
+    public ResponseEntity<UserDTOApiResource> login(@RequestBody @Valid LoginDTO loginDTO) {
         log.trace("public ResponseEntity<LoginDTOApiResource> login(@RequestBody @Valid LoginDTO loginDTO)");
         return ResponseEntity.ok(
-                LoginDTOApiResource.builder()
+                UserDTOApiResource.builder()
                         .timestamp(Instant.now())
                         .data(loginService.login(loginDTO))
                         .message("User logged in")

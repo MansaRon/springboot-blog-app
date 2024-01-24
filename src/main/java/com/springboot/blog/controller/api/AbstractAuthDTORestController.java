@@ -1,10 +1,10 @@
 package com.springboot.blog.controller.api;
 
 import com.springboot.blog.dto.GlobalApiErrorResponse;
-import com.springboot.blog.dto.api.LoginDTOApiResource;
 import com.springboot.blog.dto.api.OtpDTOApiResource;
 import com.springboot.blog.dto.api.RegistrationDTOApiResource;
 import com.springboot.blog.dto.api.UpdatePasswordDTOApiResource;
+import com.springboot.blog.dto.api.UserDTOApiResource;
 import com.springboot.blog.dto.auth.LoginDTO;
 import com.springboot.blog.dto.auth.OtpDTO;
 import com.springboot.blog.dto.auth.RegistrationDTO;
@@ -33,7 +33,7 @@ public interface AbstractAuthDTORestController {
                     content = {
                             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema =
-                                    @Schema(implementation = LoginDTOApiResource.class))
+                                    @Schema(implementation = UserDTOApiResource.class))
                     }),
             @ApiResponse(
                     responseCode = "400",
@@ -84,7 +84,7 @@ public interface AbstractAuthDTORestController {
                                     @Schema(implementation = GlobalApiErrorResponse.class))
                     })
     })
-    ResponseEntity<LoginDTOApiResource> login(@RequestBody @Valid LoginDTO loginDTO);
+    ResponseEntity<UserDTOApiResource> login(@RequestBody @Valid LoginDTO loginDTO);
 
     @Operation(tags = "User Registration", summary = "Login Registration")
     @ApiResponses({
