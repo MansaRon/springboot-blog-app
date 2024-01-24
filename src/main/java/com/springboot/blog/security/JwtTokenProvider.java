@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 /**
@@ -29,13 +31,20 @@ public class JwtTokenProvider {
     // generate JWT token
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
-        Date currentDate = new Date();
-        Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
+        // Date currentDate = new Date();
+        // Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
+
+        Instant currentDate = Instant.now();
+        Instant expireDate = currentDate.plus(Long.parseLong(jwtExpirationDate), ChronoUnit.SECONDS);
+
+        Date current = Date.from(currentDate);
+        Date expire = Date.from(expireDate);
+
         String token = Jwts
                 .builder()
                 .setSubject(username)
-                .setIssuedAt(currentDate)
-                .setExpiration(expireDate)
+                .setIssuedAt(current)
+                .setExpiration(expire)
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
 

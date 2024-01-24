@@ -267,5 +267,5 @@ public interface AbstractAuthDTORestController {
                                     @Schema(implementation = GlobalApiErrorResponse.class))
                     })
     })
-    ResponseEntity<UpdatePasswordDTOApiResource> updatePassword(@RequestBody @Valid String email, @RequestBody @Valid String password);
+    ResponseEntity<UpdatePasswordDTOApiResource> updatePassword(@RequestBody @Valid UpdatePasswordDTO updatePasswordDTO);
 }

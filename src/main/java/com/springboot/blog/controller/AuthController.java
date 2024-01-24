@@ -8,6 +8,7 @@ import com.springboot.blog.dto.api.UserDTOApiResource;
 import com.springboot.blog.dto.auth.LoginDTO;
 import com.springboot.blog.dto.auth.OtpDTO;
 import com.springboot.blog.dto.auth.RegistrationDTO;
+import com.springboot.blog.dto.auth.UpdatePasswordDTO;
 import com.springboot.blog.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -70,12 +71,12 @@ public class AuthController implements AbstractAuthDTORestController {
 
     @Override
     @PostMapping("/reset-password")
-    public ResponseEntity<UpdatePasswordDTOApiResource> updatePassword(@RequestBody @Valid String email, @RequestBody @Valid String password) {
+    public ResponseEntity<UpdatePasswordDTOApiResource> updatePassword(@RequestBody @Valid UpdatePasswordDTO updatePasswordDTO) {
         log.trace("public ResponseEntity<UpdatePasswordDTOApiResource> updatePassword(@RequestBody @Valid String email, @RequestBody @Valid String password)");
         return ResponseEntity.ok(
                 UpdatePasswordDTOApiResource.builder()
                         .timestamp(Instant.now())
-                        .data(loginService.updatePassword(email, password))
+                        .data(loginService.updatePassword(updatePasswordDTO))
                         .message("User password updated")
                         .status(String.valueOf(HttpStatus.OK))
                         .statusCode(HttpStatus.OK.value())

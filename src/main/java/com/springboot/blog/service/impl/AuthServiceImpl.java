@@ -57,8 +57,6 @@ public class AuthServiceImpl implements AuthService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    // TODO Change the logic to use UserDTO instead of LoginDTO and
-    // TODO set data accordingly
     @Override
     public UserDTO login(LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(
@@ -66,13 +64,14 @@ public class AuthServiceImpl implements AuthService {
                         loginDTO.getUsernameOrEmail(), loginDTO.getPassword()
                 ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtTokenProvider.generateToken(authentication);
-        User user = new User();
+        // String token = jwtTokenProvider.generateToken(authentication);
+        User user = userRepository.findByUsername(loginDTO.getUsernameOrEmail())
+                .orElseThrow(() -> new ClientException(HttpStatus.BAD_REQUEST, "Username/email not found."));
 
         return UserDTO.builder()
                 .name(user.getName())
                 .email(user.getEmail())
-                .username(jwtTokenProvider.getUsername(token))
+                .username(user.getEmail())
                 .accessToken(jwtTokenProvider.generateToken(authentication))
                 .status(AccountStatus.ACTIVE.description())
                 .role(user.getRoles())
@@ -116,18 +115,20 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UpdatePasswordDTO updatePassword(String email, String password) {
-        User user = userRepository.findByEmail(email)
+    public UpdatePasswordDTO updatePassword(UpdatePasswordDTO updatePasswordDTO) {
+        UpdatePasswordDTO passwordDTO = new UpdatePasswordDTO();
+        User findUser = userRepository.findByEmail(updatePasswordDTO.getEmail())
                 .orElseThrow(() -> new ClientException(HttpStatus.BAD_REQUEST, "Username does not exist"));
 
-        if (user != null) {
-            user.builder()
-                    .email(email)
-                    .password(passwordEncoder.encode(password))
+        if (findUser != null) {
+            User saveUser = User.builder()
+                    .password(updatePasswordDTO.getPassword())
                     .build();
+            userRepository.save(saveUser);
+            passwordDTO = objectMapper.objectMapper().map(saveUser, UpdatePasswordDTO.class);
         }
 
-        return objectMapper.objectMapper().map(user, UpdatePasswordDTO.class);
+        return passwordDTO;
     }
 
     private OneTimePassword returnOneTimePassword() {

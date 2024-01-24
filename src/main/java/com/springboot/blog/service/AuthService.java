@@ -14,5 +14,5 @@ public interface AuthService {
 
     RegistrationDTO register(RegistrationDTO registrationDTO);
 
-    UpdatePasswordDTO updatePassword(String email, String password);
+    UpdatePasswordDTO updatePassword(UpdatePasswordDTO updatePasswordDTO);
 }
