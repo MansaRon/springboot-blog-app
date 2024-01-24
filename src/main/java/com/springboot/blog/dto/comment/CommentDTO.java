@@ -14,7 +14,6 @@ import lombok.experimental.SuperBuilder;
  * @author Thendo
  * @date 2024/01/06
  */
-@Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
