@@ -79,6 +79,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 );
     }
 
+    @ExceptionHandler({UnauthorizedException.class})
+    public ResponseEntity<GlobalApiErrorResponse> handleUnauthorizedException(UnauthorizedException exception, HttpServletRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(GlobalApiErrorResponse.builder()
+                        .path(exception.getStatus())
+                        .status(HttpStatus.FORBIDDEN.toString())
+                        .statusCode(HttpStatus.FORBIDDEN.value())
+                        .path(getPath(request))
+                        .message(exception.getMessage())
+                        .timestamp(Instant.now())
+                        .build()
+                );
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers,
