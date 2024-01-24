@@ -104,7 +104,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(registrationDTO.getPassword()))
                 .roles(roles)
                 .status(AccountStatus.AWAITING_CONFIRMATION)
-                .oneTimePassword(returnOneTimePassword())
+//                .oneTimePassword(returnOneTimePassword())
                 .build();
 
         userRepository.save(user);
