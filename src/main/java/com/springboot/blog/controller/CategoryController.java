@@ -31,7 +31,7 @@ public class CategoryController implements AbstractCategoryDTORestController {
 
     @Override
     @PostMapping
-    @Secured({"USER", "ADMIN"})
+    @Secured({"ADMIN"})
     public ResponseEntity<CategoryDTOApiResource> addCategory(@RequestBody @Valid CategoryDTO categoryDTO) {
         log.trace("public ResponseEntity<CategoryDTOApiResource> addCategory(@RequestBody @Valid CategoryDTO categoryDTO)");
         return ResponseEntity.ok(

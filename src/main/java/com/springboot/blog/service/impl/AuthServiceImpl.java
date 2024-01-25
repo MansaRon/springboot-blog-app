@@ -5,6 +5,7 @@ import com.springboot.blog.entity.AccountStatus;
 import com.springboot.blog.entity.OneTimePassword;
 import com.springboot.blog.entity.Role;
 import com.springboot.blog.entity.User;
+import com.springboot.blog.exceptions.BadRequestException;
 import com.springboot.blog.exceptions.ClientException;
 import com.springboot.blog.mapper.ObjectMapper;
 import com.springboot.blog.repository.OneTimePasswordRepository;
@@ -68,6 +69,10 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByUsername(loginDTO.getUsernameOrEmail())
                 .orElseThrow(() -> new ClientException(HttpStatus.BAD_REQUEST, "Username/email not found."));
 
+        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+            throw new BadRequestException("Invalid password", HttpStatus.BAD_REQUEST.toString(), 400);
+        }
+
         return UserDTO.builder()
                 .name(user.getName())
                 .email(user.getEmail())
@@ -92,7 +97,7 @@ public class AuthServiceImpl implements AuthService {
 
         Set<Role> roles = new HashSet<>();
         Role userRole = roleRepository
-                .findByName("ROLE_USER")
+                .findByName("ROLE_ADMIN")
                 .orElseThrow(() -> new ClientException(HttpStatus.BAD_REQUEST, "No roles found"));
         roles.add(userRole);
 
