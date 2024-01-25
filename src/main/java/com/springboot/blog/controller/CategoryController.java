@@ -76,4 +76,20 @@ public class CategoryController implements AbstractCategoryDTORestController {
         );
     }
 
+    @Override
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CategoryDTOApiResource> updateCategories(@PathVariable("id") Long id, @RequestBody @Valid CategoryDTO categoryDTO) {
+        log.trace("public ResponseEntity<CategoryDTOApiResource> updateCategories(@Valid @PathVariable(\"id\") Long id, @RequestBody @Valid CategoryDTO categoryDTO)");
+        return ResponseEntity.ok(
+                CategoryDTOApiResource.builder()
+                        .timestamp(Instant.now())
+                        .data(categoryService.updateCategory(id, categoryDTO))
+                        .message("Category updated.")
+                        .status(String.valueOf(HttpStatus.OK))
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
 }

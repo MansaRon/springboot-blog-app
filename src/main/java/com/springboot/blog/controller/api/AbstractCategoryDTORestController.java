@@ -12,7 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Thendo
@@ -178,4 +180,57 @@ public interface AbstractCategoryDTORestController {
                     })
     })
     ResponseEntity<CategoryDTOListApiResource> getAllCategories();
+
+    @Operation(tags = "Update Category", summary = "Updating all categories")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Update all categories",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = CategoryDTOApiResource.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authorised to access resource",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Authorisation invalid",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Requested resource does not exist",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "Request could not be completed",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    }),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = {
+                            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema =
+                                    @Schema(implementation = GlobalApiErrorResponse.class))
+                    })
+    })
+    ResponseEntity<CategoryDTOApiResource> updateCategories(@PathVariable Long id, @RequestBody @Valid CategoryDTO categoryDTO);
 }
