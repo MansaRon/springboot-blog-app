@@ -2,6 +2,7 @@ package com.springboot.blog.controller;
 
 import com.springboot.blog.controller.api.AbstractCategoryDTORestController;
 import com.springboot.blog.dto.api.CategoryDTOApiResource;
+import com.springboot.blog.dto.api.CategoryDTOListApiResource;
 import com.springboot.blog.dto.category.CategoryDTO;
 import com.springboot.blog.service.CategoryService;
 import jakarta.validation.Valid;
@@ -53,6 +54,22 @@ public class CategoryController implements AbstractCategoryDTORestController {
                         .timestamp(Instant.now())
                         .data(categoryService.getCategoryById(id))
                         .message("Category " + id + " found.")
+                        .status(String.valueOf(HttpStatus.OK))
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @Override
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CategoryDTOListApiResource> getAllCategories() {
+        log.trace("public ResponseEntity<CategoryDTOListApiResource> getAllCategories()");
+        return ResponseEntity.ok(
+                CategoryDTOListApiResource.builder()
+                        .timestamp(Instant.now())
+                        .data(categoryService.getAllCategories())
+                        .message("Categories retrieved successfully.")
                         .status(String.valueOf(HttpStatus.OK))
                         .statusCode(HttpStatus.OK.value())
                         .build()

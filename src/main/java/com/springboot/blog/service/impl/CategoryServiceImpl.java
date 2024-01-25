@@ -9,6 +9,10 @@ import com.springboot.blog.service.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author Thendo
  * @date 2024/01/25
@@ -38,5 +42,16 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Category", "id", id));
         return objectMapper.objectMapper().map(category, CategoryDTO.class);
+    }
+
+    @Override
+    public List<CategoryDTO> getAllCategories() {
+        List<Category> categories = categoryR.findAll();
+        return categories
+                .stream()
+                .map((category) -> objectMapper
+                        .objectMapper()
+                        .map(category, CategoryDTO.class))
+                .collect(Collectors.toList());
     }
 }
