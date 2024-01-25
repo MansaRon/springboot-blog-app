@@ -8,4 +8,6 @@ import com.springboot.blog.dto.category.CategoryDTO;
  */
 public interface CategoryService {
     CategoryDTO addCategory(CategoryDTO categoryDTO);
+
+    CategoryDTO getCategoryById(Long id);
 }

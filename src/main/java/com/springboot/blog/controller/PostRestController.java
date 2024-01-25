@@ -32,8 +32,8 @@ public class PostRestController implements AbstractPostDTORestController {
 
     @Override
     @PostMapping
-    @Secured({"USER"})
-    // @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
+    // @Secured({"USER"})
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
     public ResponseEntity<PostDTOApiResource> createPost(@RequestBody @Valid PostDTO postDTO) {
         log.trace("public ResponseEntity<PostDTOApiResource> createPost(@RequestBody @Valid PostDTO postDTO)");
         return ResponseEntity.ok(

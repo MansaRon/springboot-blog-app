@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdatePasswordDTO {
-    private String username;
+//    private String username;
     private String email;
     private String password;
 }

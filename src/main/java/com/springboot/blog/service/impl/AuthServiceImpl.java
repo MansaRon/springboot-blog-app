@@ -69,6 +69,7 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByUsername(loginDTO.getUsernameOrEmail())
                 .orElseThrow(() -> new ClientException(HttpStatus.BAD_REQUEST, "Username/email not found."));
 
+        // Check if password matches what's in the DB
         if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
             throw new BadRequestException("Invalid password", HttpStatus.BAD_REQUEST.toString(), 400);
         }
@@ -126,11 +127,11 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new ClientException(HttpStatus.BAD_REQUEST, "Username does not exist"));
 
         if (findUser != null) {
-            User saveUser = User.builder()
+            findUser = User.builder()
                     .password(updatePasswordDTO.getPassword())
                     .build();
-            userRepository.save(saveUser);
-            passwordDTO = objectMapper.objectMapper().map(saveUser, UpdatePasswordDTO.class);
+            userRepository.save(findUser);
+            passwordDTO = objectMapper.objectMapper().map(findUser, UpdatePasswordDTO.class);
         }
 
         return passwordDTO;
