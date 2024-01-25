@@ -2,6 +2,7 @@ package com.springboot.blog.service.impl;
 
 import com.springboot.blog.dto.category.CategoryDTO;
 import com.springboot.blog.entity.Category;
+import com.springboot.blog.mapper.ObjectMapper;
 import com.springboot.blog.repository.CategoryRepository;
 import com.springboot.blog.service.CategoryService;
 import org.modelmapper.ModelMapper;
@@ -15,17 +16,17 @@ import org.springframework.stereotype.Service;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryR;
-    private final ModelMapper model;
+    private final ObjectMapper objectMapper;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ObjectMapper modelMapper) {
         this.categoryR = categoryRepository;
-        this.model = modelMapper;
+        this.objectMapper = modelMapper;
     }
 
     @Override
     public CategoryDTO addCategory(CategoryDTO categoryDTO) {
-        Category category = model.map(categoryDTO, Category.class);
+        Category category = objectMapper.objectMapper().map(categoryDTO, Category.class);
         categoryR.save(category);
-        return model.map(category, CategoryDTO.class);
+        return objectMapper.objectMapper().map(category, CategoryDTO.class);
     }
 }
