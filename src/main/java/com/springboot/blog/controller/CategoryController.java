@@ -44,10 +44,10 @@ public class CategoryController implements AbstractCategoryDTORestController {
     }
 
     @Override
-    @GetMapping
+    @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<CategoryDTOApiResource> getCategoryById(@RequestBody @Valid Long id) {
-        log.trace("public ResponseEntity<CategoryDTOApiResource> getCategoryById(@RequestBody @Valid Long id)");
+    public ResponseEntity<CategoryDTOApiResource> getCategoryById(@Valid @PathVariable("id") Long id) {
+        log.trace("public ResponseEntity<CategoryDTOApiResource> getCategoryById(@Valid @RequestParam(value = \"id\") Long id)");
         return ResponseEntity.ok(
                 CategoryDTOApiResource.builder()
                         .timestamp(Instant.now())

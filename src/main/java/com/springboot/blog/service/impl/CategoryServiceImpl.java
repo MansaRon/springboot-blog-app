@@ -2,6 +2,7 @@ package com.springboot.blog.service.impl;
 
 import com.springboot.blog.dto.category.CategoryDTO;
 import com.springboot.blog.entity.Category;
+import com.springboot.blog.exceptions.ResourceNotFoundException;
 import com.springboot.blog.mapper.ObjectMapper;
 import com.springboot.blog.repository.CategoryRepository;
 import com.springboot.blog.service.CategoryService;
@@ -32,6 +33,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO getCategoryById(Long id) {
-        return objectMapper.objectMapper().map(categoryR.findById(id), CategoryDTO.class);
+        Category category = categoryR
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Category", "id", id));
+        return objectMapper.objectMapper().map(category, CategoryDTO.class);
     }
 }
