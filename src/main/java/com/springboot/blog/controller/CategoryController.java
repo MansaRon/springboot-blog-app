@@ -3,6 +3,7 @@ package com.springboot.blog.controller;
 import com.springboot.blog.controller.api.AbstractCategoryDTORestController;
 import com.springboot.blog.dto.api.CategoryDTOApiResource;
 import com.springboot.blog.dto.api.CategoryDTOListApiResource;
+import com.springboot.blog.dto.api.CategoryStringApiResource;
 import com.springboot.blog.dto.category.CategoryDTO;
 import com.springboot.blog.service.CategoryService;
 import jakarta.validation.Valid;
@@ -86,6 +87,38 @@ public class CategoryController implements AbstractCategoryDTORestController {
                         .timestamp(Instant.now())
                         .data(categoryService.updateCategory(id, categoryDTO))
                         .message("Category updated.")
+                        .status(String.valueOf(HttpStatus.OK))
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @Override
+    @DeleteMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CategoryStringApiResource> deleteAllCategories() {
+        log.trace("public ResponseEntity<String> deleteAllCategories()");
+        return ResponseEntity.ok(
+                CategoryStringApiResource.builder()
+                        .timestamp(Instant.now())
+                        .data(categoryService.deleteAll())
+                        .message("All categories deleted")
+                        .status(String.valueOf(HttpStatus.OK))
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
+    }
+
+    @Override
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CategoryStringApiResource> deleteCategory(@PathVariable(value = "id") Long id) {
+        log.trace("public ResponseEntity<CategoryStringApiResource> deleteCategory(@PathVariable(value = \"id\") Long id)");
+        return ResponseEntity.ok(
+                CategoryStringApiResource.builder()
+                        .timestamp(Instant.now())
+                        .data(categoryService.deleteById(id))
+                        .message("Category deleted")
                         .status(String.valueOf(HttpStatus.OK))
                         .statusCode(HttpStatus.OK.value())
                         .build()

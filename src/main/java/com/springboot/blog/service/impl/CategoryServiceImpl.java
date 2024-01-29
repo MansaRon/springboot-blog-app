@@ -61,12 +61,6 @@ public class CategoryServiceImpl implements CategoryService {
                         new ResourceNotFoundException("Category", "id", id)
         );
 
-//        category.builder()
-//                .id(id)
-//                .name(categoryDTO.getName())
-//                .description(categoryDTO.getDescription())
-//                .build();
-
         category.setId(id);
         category.setName(categoryDTO.getName());
         category.setDescription(categoryDTO.getDescription());
@@ -74,5 +68,20 @@ public class CategoryServiceImpl implements CategoryService {
         Category updatedCategory = categoryR.save(category);
 
         return objectMapper.objectMapper().map(updatedCategory, CategoryDTO.class);
+    }
+
+    @Override
+    public String deleteAll() {
+        categoryR.deleteAll();
+        return "All categories are deleted.";
+    }
+
+    @Override
+    public String deleteById(Long id) {
+        categoryR.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Category", "id", id)
+        );
+        categoryR.deleteById(id);
+        return "Category with id " + id + " has been deleted.";
     }
 }
