@@ -6,6 +6,8 @@ import com.springboot.blog.dto.api.PostDTOListApiResource;
 import com.springboot.blog.dto.api.PostPageApiResource;
 import com.springboot.blog.dto.post.PostDTO;
 import com.springboot.blog.service.PostService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +34,7 @@ public class PostRestController implements AbstractPostDTORestController {
 
     @Override
     @PostMapping
-    // @Secured({"USER"})
+    @SecurityRequirement(name = "Bear Authentication")
     @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
     public ResponseEntity<PostDTOApiResource> createPost(@RequestBody @Valid PostDTO postDTO) {
         log.trace("public ResponseEntity<PostDTOApiResource> createPost(@RequestBody @Valid PostDTO postDTO)");
@@ -80,6 +82,7 @@ public class PostRestController implements AbstractPostDTORestController {
     @Override
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<PostDTOApiResource> editPost(@PathVariable long id, @Valid @RequestBody PostDTO postDTO) {
         log.trace("public ResponseEntity<PostDTOApiResource> editPost(@PathVariable long id, @Valid @RequestBody PostDTO postDTO)");
         return ResponseEntity.ok(
@@ -96,6 +99,7 @@ public class PostRestController implements AbstractPostDTORestController {
     @Override
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<String> deletePost(long id) {
         log.trace("public ResponseEntity<String> deletePost(long id)");
         return ResponseEntity.ok(postService.deletePost(id));
@@ -104,6 +108,7 @@ public class PostRestController implements AbstractPostDTORestController {
     @Override
     @DeleteMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<String> deleteAllPosts() {
         log.trace("public ResponseEntity<String> deleteAllPosts()");
         return ResponseEntity.ok(postService.deleteAll());

@@ -6,6 +6,7 @@ import com.springboot.blog.dto.api.CategoryDTOListApiResource;
 import com.springboot.blog.dto.api.CategoryStringApiResource;
 import com.springboot.blog.dto.category.CategoryDTO;
 import com.springboot.blog.service.CategoryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class CategoryController implements AbstractCategoryDTORestController {
     @Override
     @PostMapping
     @Secured({"ADMIN"})
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<CategoryDTOApiResource> addCategory(@RequestBody @Valid CategoryDTO categoryDTO) {
         log.trace("public ResponseEntity<CategoryDTOApiResource> addCategory(@RequestBody @Valid CategoryDTO categoryDTO)");
         return ResponseEntity.ok(
@@ -48,6 +50,7 @@ public class CategoryController implements AbstractCategoryDTORestController {
     @Override
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<CategoryDTOApiResource> getCategoryById(@Valid @PathVariable("id") Long id) {
         log.trace("public ResponseEntity<CategoryDTOApiResource> getCategoryById(@Valid @RequestParam(value = \"id\") Long id)");
         return ResponseEntity.ok(
@@ -64,6 +67,7 @@ public class CategoryController implements AbstractCategoryDTORestController {
     @Override
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<CategoryDTOListApiResource> getAllCategories() {
         log.trace("public ResponseEntity<CategoryDTOListApiResource> getAllCategories()");
         return ResponseEntity.ok(
@@ -80,6 +84,7 @@ public class CategoryController implements AbstractCategoryDTORestController {
     @Override
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<CategoryDTOApiResource> updateCategories(@PathVariable("id") Long id, @RequestBody @Valid CategoryDTO categoryDTO) {
         log.trace("public ResponseEntity<CategoryDTOApiResource> updateCategories(@Valid @PathVariable(\"id\") Long id, @RequestBody @Valid CategoryDTO categoryDTO)");
         return ResponseEntity.ok(
@@ -96,6 +101,7 @@ public class CategoryController implements AbstractCategoryDTORestController {
     @Override
     @DeleteMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<CategoryStringApiResource> deleteAllCategories() {
         log.trace("public ResponseEntity<String> deleteAllCategories()");
         return ResponseEntity.ok(
@@ -112,6 +118,7 @@ public class CategoryController implements AbstractCategoryDTORestController {
     @Override
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "Bear Authentication")
     public ResponseEntity<CategoryStringApiResource> deleteCategory(@PathVariable(value = "id") Long id) {
         log.trace("public ResponseEntity<CategoryStringApiResource> deleteCategory(@PathVariable(value = \"id\") Long id)");
         return ResponseEntity.ok(
