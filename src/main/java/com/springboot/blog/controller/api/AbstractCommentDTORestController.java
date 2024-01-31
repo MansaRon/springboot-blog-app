@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  */
 public interface AbstractCommentDTORestController {
 
-    @Operation(tags = "Create a comment on a post", summary = "Creation of a comment")
+    @Operation(tags = "Comment", summary = "Creation of a comment")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -82,7 +82,7 @@ public interface AbstractCommentDTORestController {
     })
     ResponseEntity<CommentDTOApiResource> createComment(@PathVariable long id, @RequestBody @Valid CommentDTO commentDTO);
 
-    @Operation(tags = "Get comments from a post", summary = "Get comments")
+    @Operation(tags = "Comment", summary = "Get comments")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -135,7 +135,7 @@ public interface AbstractCommentDTORestController {
     })
     ResponseEntity<CommentDTOListApiResource> getCommentsByPostId(@PathVariable long postId);
 
-    @Operation(tags = "Get comment by ID ", summary = "Retrieve comment by ID")
+    @Operation(tags = "Comment", summary = "Retrieve comment by ID")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -196,7 +196,7 @@ public interface AbstractCommentDTORestController {
     })
     ResponseEntity<CommentDTOApiResource> getCommentById(@PathVariable Long postId, @PathVariable Long commentId);
 
-    @Operation(tags = "Update comment", summary = "Retrieve comment by ID")
+    @Operation(tags = "Comment", summary = "Update comment by ID")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -257,7 +257,7 @@ public interface AbstractCommentDTORestController {
     })
     ResponseEntity<CommentDTOApiResource> updateComment(@PathVariable Long postId, @PathVariable Long commentId, @RequestBody @Valid CommentDTO commentDTO);
 
-    @Operation(tags = "Delete comment", summary = "Delete a comment by ID")
+    @Operation(tags = "Comment", summary = "Delete a comment by ID")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",

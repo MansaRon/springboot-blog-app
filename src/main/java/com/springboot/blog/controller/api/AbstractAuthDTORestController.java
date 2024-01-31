@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  */
 public interface AbstractAuthDTORestController {
 
-    @Operation(tags = "User Login", summary = "Login User")
+    @Operation(tags = "User Authentication", summary = "Login User")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -86,7 +86,7 @@ public interface AbstractAuthDTORestController {
     })
     ResponseEntity<UserDTOApiResource> login(@RequestBody @Valid LoginDTO loginDTO);
 
-    @Operation(tags = "User Registration", summary = "Login Registration")
+    @Operation(tags = "User Authentication", summary = "Login Registration")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -147,7 +147,7 @@ public interface AbstractAuthDTORestController {
     })
     ResponseEntity<RegistrationDTOApiResource> register(@RequestBody @Valid RegistrationDTO registrationDTO);
 
-    @Operation(tags = "User Confirmation", summary = "Confirming user with OTP")
+    @Operation(tags = "User Authentication", summary = "Confirming user with OTP")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -208,10 +208,9 @@ public interface AbstractAuthDTORestController {
     })
     ResponseEntity<OtpDTOApiResource> confirmOTP(@RequestBody @Valid OtpDTO otpDTO);
 
-    @Operation(tags = "User Password Update", summary = "Updating a user password")
+    @Operation(tags = "User Authentication", summary = "Updating a user password")
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
+            @ApiResponse(responseCode = "200",
                     description = "Password successfully updated",
                     content = {
                             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,

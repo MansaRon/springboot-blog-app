@@ -25,7 +25,7 @@ import java.util.List;
  */
 public interface AbstractPostDTORestController {
 
-    @Operation(tags = "Create Post", summary = "Creation of a post")
+    @Operation(tags = "Post", summary = "Creation of a post")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -86,7 +86,7 @@ public interface AbstractPostDTORestController {
     })
     ResponseEntity<PostDTOApiResource> createPost(@RequestBody PostDTO postDTO);
 
-    @Operation(tags = "Get Posts", summary = "Retrieval of post")
+    @Operation(tags = "Post", summary = "Retrieval of post")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -147,10 +147,10 @@ public interface AbstractPostDTORestController {
     })
     ResponseEntity<PostPageApiResource> getPosts(@RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
                                                     @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-                                                 @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortBy,
+                                                 @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
                                                  @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir);
 
-    @Operation(tags = "Get Post By ID", summary = "Retrieval of a single post")
+    @Operation(tags = "Post", summary = "Retrieval of a single post")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -211,7 +211,7 @@ public interface AbstractPostDTORestController {
     })
     ResponseEntity<PostDTOApiResource> getPostById(@PathVariable(name = "id") long id);
 
-    @Operation(tags = "Edit post", summary = "Edit existing post")
+    @Operation(tags = "Post", summary = "Edit existing post")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -272,7 +272,7 @@ public interface AbstractPostDTORestController {
     })
     ResponseEntity<PostDTOApiResource> editPost(@PathVariable(name = "id") long id, @RequestBody PostDTO postDTO);
 
-    @Operation(tags = "Delete post", summary = "Delete post")
+    @Operation(tags = "Post", summary = "Delete post")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -333,7 +333,7 @@ public interface AbstractPostDTORestController {
     })
     ResponseEntity<String> deletePost(@PathVariable(name = "id") long id);
 
-    @Operation(tags = "Delete all posts", summary = "Delete all posts")
+    @Operation(tags = "Post", summary = "Delete all posts")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",

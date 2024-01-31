@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 public interface AbstractCategoryDTORestController {
 
-    @Operation(tags = "Add Category", summary = "Adding a category")
+    @Operation(tags = "Category", summary = "Adding a category")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -76,7 +76,7 @@ public interface AbstractCategoryDTORestController {
     })
     ResponseEntity<CategoryDTOApiResource> addCategory(@RequestBody @Valid CategoryDTO categoryDTO);
 
-    @Operation(tags = "Getting Category by ID", summary = "Retrieving of Category by ID")
+    @Operation(tags = "Category", summary = "Retrieving of Category by ID")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -129,7 +129,7 @@ public interface AbstractCategoryDTORestController {
     })
     ResponseEntity<CategoryDTOApiResource> getCategoryById(@RequestBody @Valid Long id);
 
-    @Operation(tags = "Getting All Categories", summary = "Retrieving of all categories")
+    @Operation(tags = "Category", summary = "Retrieving of all categories")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -182,7 +182,7 @@ public interface AbstractCategoryDTORestController {
     })
     ResponseEntity<CategoryDTOListApiResource> getAllCategories();
 
-    @Operation(tags = "Update Category", summary = "Updating all categories")
+    @Operation(tags = "Category", summary = "Updating all categories")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -235,7 +235,7 @@ public interface AbstractCategoryDTORestController {
     })
     ResponseEntity<CategoryDTOApiResource> updateCategories(@PathVariable Long id, @RequestBody @Valid CategoryDTO categoryDTO);
 
-    @Operation(tags = "Delete Category", summary = "Deleting all categories")
+    @Operation(tags = "Category", summary = "Deleting all categories")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -288,7 +288,7 @@ public interface AbstractCategoryDTORestController {
     })
     ResponseEntity<CategoryStringApiResource> deleteAllCategories();
 
-    @Operation(tags = "Delete Single Category", summary = "Deleting a category by ID")
+    @Operation(tags = "Category", summary = "Deleting a category by ID")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
