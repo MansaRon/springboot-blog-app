@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -81,4 +83,16 @@ public class User {
     @JoinColumn(name = "OTP_id")
     @OneToOne(cascade = CascadeType.ALL)
     private OneTimePassword oneTimePassword;
+
+    /**
+     * Timestamp for date creation
+     */
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
+
+    /**
+     * Timestamp for date update
+     */
+    @CreationTimestamp
+    private LocalDateTime dateUpdated;
 }

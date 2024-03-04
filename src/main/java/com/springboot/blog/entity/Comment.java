@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 /**
  * @author Thendo
@@ -51,4 +54,16 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+
+    /**
+     * Timestamp for date creation
+     */
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
+
+    /**
+     * Timestamp for date update
+     */
+    @CreationTimestamp
+    private LocalDateTime dateUpdated;
 }

@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -47,4 +49,16 @@ public class Category {
      */
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
+
+    /**
+     * Timestamp for date creation
+     */
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
+
+    /**
+     * Timestamp for date update
+     */
+    @CreationTimestamp
+    private LocalDateTime dateUpdated;
 }

@@ -3,7 +3,9 @@ package com.springboot.blog.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -58,4 +60,16 @@ public class Post {
     @JoinColumn(name = "category_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
+
+    /**
+     * Timestamp for date creation
+     */
+    @CreationTimestamp
+    private LocalDateTime dateCreated;
+
+    /**
+     * Timestamp for date update
+     */
+    @CreationTimestamp
+    private LocalDateTime dateUpdated;
 }
