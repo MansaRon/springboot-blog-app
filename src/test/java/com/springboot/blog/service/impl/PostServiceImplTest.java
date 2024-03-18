@@ -1,9 +1,12 @@
 package com.springboot.blog.service.impl;
 
+import com.springboot.blog.dto.post.PostDTO;
 import com.springboot.blog.entity.Category;
 import com.springboot.blog.entity.Comment;
 import com.springboot.blog.entity.Post;
+import com.springboot.blog.mapper.ObjectMapper;
 import com.springboot.blog.payload.PostResponse;
+import com.springboot.blog.repository.CategoryRepository;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,35 +14,43 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.aot.DisabledInAotMode;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Thendo
  * @date 2024/03/06
  */
-@ExtendWith(MockitoExtension.class)
+@ContextConfiguration(classes = {PostServiceImpl.class, ObjectMapper.class})
+@ExtendWith(SpringExtension.class)
+@DisabledInAotMode
 class PostServiceImplTest {
 
-    @InjectMocks
-    PostServiceImpl postService;
+    @MockBean
+    private CategoryRepository categoryRepository;
 
-    @Mock
-    PostRepository postRepository;
+    @MockBean
+    private PostRepository postRepository;
+
+    @Autowired
+    private PostServiceImpl postServiceImpl;
 
     @BeforeEach
     public void init() {
@@ -48,32 +59,66 @@ class PostServiceImplTest {
 
     @Test
     void createPost() {
+        // Arrange
+        Category category = new Category();
+        category.setDateCreated(LocalDate.of(1970, 1, 1).atStartOfDay());
+        category.setDateUpdated(LocalDate.of(1970, 1, 1).atStartOfDay());
+        category.setDescription("The characteristics of someone or something");
+        category.setId(1L);
+        category.setName("Name");
+        category.setPosts(new ArrayList<>());
+        Optional<Category> ofResult = Optional.of(category);
+        when(categoryRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+
+        Category category2 = new Category();
+        category2.setDateCreated(LocalDate.of(1970, 1, 1).atStartOfDay());
+        category2.setDateUpdated(LocalDate.of(1970, 1, 1).atStartOfDay());
+        category2.setDescription("The characteristics of someone or something");
+        category2.setId(1L);
+        category2.setName("Name");
+        category2.setPosts(new ArrayList<>());
+
+        Post post = new Post();
+        post.setCategory(category2);
+        post.setComments(new HashSet<>());
+        post.setContent("Not all who wander are lost");
+        post.setDateCreated(LocalDate.of(1970, 1, 1).atStartOfDay());
+        post.setDateUpdated(LocalDate.of(1970, 1, 1).atStartOfDay());
+        post.setDescription("The characteristics of someone or something");
+        post.setId(1L);
+        post.setTitle("Dr");
+        when(postRepository.save(Mockito.<Post>any())).thenReturn(post);
+
+        // Act
+        PostDTO actualCreatePostResult = postServiceImpl.createPost(new PostDTO());
+
+        // Assert
+        verify(categoryRepository).findById(Mockito.<Long>any());
+        verify(postRepository).save(Mockito.<Post>any());
+        assertEquals("Dr", actualCreatePostResult.getTitle());
+        assertEquals("Not all who wander are lost", actualCreatePostResult.getContent());
+        assertEquals("The characteristics of someone or something", actualCreatePostResult.getDescription());
+        assertEquals(1L, actualCreatePostResult.getCategoryId().longValue());
+        assertEquals(1L, actualCreatePostResult.getId().longValue());
+        assertTrue(actualCreatePostResult.getComments().isEmpty());
     }
 
     @Test
     void getAllPosts() {
-        // Prepare test data
-        int pageNo = 0;
-        int pageSize = 10;
-        String sortBy = "createdAt";
-        String sortDir = "ASC";
+        ArrayList<Post> content = new ArrayList<>();
+        when(postRepository.findAll(Mockito.<Pageable>any())).thenReturn(new PageImpl<>(content));
 
-        // Create a mock Page object
-        List<Post> posts = new ArrayList<>();
-        Page<Post> page = new PageImpl<>(posts);
+        // Act
+        PostResponse actualAllPosts = postServiceImpl.getAllPosts(1, 3, "Sort By", "Sort Dir");
 
-        // Mock the behavior of postRepository.findAll method
-        when(postRepository.findAll(any(Pageable.class))).thenReturn(page);
-
-        // Call the method under test
-        PostResponse result = postService.getAllPosts(pageNo, pageSize, sortBy, sortDir);
-
-        // Verify the result
-        assertNotNull(result);
-        //assertEquals(pageNo, result.getPageNo());
-        assertEquals(page.getTotalElements(), result.getTotalElements());
-        assertEquals(page.getTotalPages(), result.getTotalPages());
-        assertEquals(page.isLast(), result.isLast());
+        // Assert
+        verify(postRepository).findAll(Mockito.<Pageable>any());
+        assertEquals(0, actualAllPosts.getPageSize());
+        assertEquals(0L, actualAllPosts.getTotalElements());
+        assertEquals(1, actualAllPosts.getPageNo());
+        assertEquals(1, actualAllPosts.getTotalPages());
+        assertTrue(actualAllPosts.isLast());
+        assertEquals(content, actualAllPosts.getContent());
     }
 
     @Test
